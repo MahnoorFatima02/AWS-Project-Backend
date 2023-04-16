@@ -22,7 +22,8 @@
 
 2. GET `/employeeSalaries` 
 
-    Use the above generated accessToken to get the employee Salaries. Following json will be returned. 
+    Use the above generated accessToken to get the employee Salaries.Following json will be returned. 
+    
     `[
         {
             "employeeNumber": "1234",
