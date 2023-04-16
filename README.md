@@ -23,7 +23,7 @@
 2. GET `/employeeSalaries` 
 
     Use the above generated accessToken to get the employee Salaries. Following json will be returned. 
-    [
+    `[
         {
             "employeeNumber": "1234",
             "salary": "4000",
@@ -39,6 +39,6 @@
             "salary": "4100",
             "department": "HR"
         }
-    ]
+    ]`
 
-For JWT_KEY please create a .env file in the root folder with JWT_KEY="SomeRandomKey" for the backend to work. 
+NOTE: For JWT_KEY please create a .env file in the root folder with JWT_KEY="SomeRandomKey" for the backend to work. 
