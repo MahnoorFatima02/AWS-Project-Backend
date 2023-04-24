@@ -1,19 +1,7 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config()
 const JWT_KEY = process.env.JWT_KEY
-
-
-const users = [
-	{
-			username: 'john',
-			password: 'password123admin',
-			role: 'admin'
-	}, {
-			username: 'anna',
-			password: 'password123member',
-			role: 'member'
-	}
-];
+const db = require('../database/db')
 
 const requestLogger = (request, response, next) => {
     console.log(`${request.method} url:: ${request.url}`);
@@ -23,7 +11,6 @@ const requestLogger = (request, response, next) => {
 // Error handling Middleware functions
 const errorLogger = (error, request, response, next) => {
   console.log( `error ${error.message}`)
-	// console.log(request)
   next(error) // calling next middleware
 }
 
@@ -47,9 +34,8 @@ const authenticateJWT = (req, res, next) => {
 		const token = authHeader.split(' ')[1];
 		jwt.verify(token, JWT_KEY, (err, user) => {
 			if (err) {
-					return res.sendStatus(403);
+				return res.sendStatus(403);
 			}
-
 			req.user = user;
 			next();
 		});
@@ -58,29 +44,56 @@ const authenticateJWT = (req, res, next) => {
 	}
 };
 
-const login = (req, res, next) => {
+const login = async function(req, res, next) {
 	const { username, password } = req.body;
 
-	const user = users.find(u => { return u.username === username && u.password === password });
-
-	if (user) {
-		// Generate an access token
-		const accessToken = jwt.sign({ username: user.username,  role: user.role }, JWT_KEY);
-
-		res.json({
-			accessToken
+	const user = await db.getUser(parseInt(username), password);
+	if (user != null) {
+		const accessToken = jwt.sign({ sub: user.emp_no, role: user.role }, JWT_KEY, {
+			expiresIn: "2h"
 		});
+		res.json({accessToken});
 	} else {
-		res.send('Username or password incorrect');
+		res.status(401).send('Username or password incorrect');
 	}
 }
 
+const isManager = (req) => {
+	if(req.user.role === 'manager') {
+		return true
+	}
+	return false
+}
 
-module.exports = { 
+const hasUserSufficientRights = (req) => {
+	const employeeNo = parseInt(req.params.id)
+	if(req.user.sub === employeeNo) {
+		return true
+	}
+	return false
+}
+
+const salaryAccess = async function(req, res, next) {
+	if (isManager(req) || hasUserSufficientRights(req)) {
+		return next();
+	}
+	return res.sendStatus(403);
+}
+
+const ownInformationAccess = async function(req, res, next) {
+	if (hasUserSufficientRights(req)) {
+		return next();
+	}
+	return res.sendStatus(403);
+}
+
+module.exports = {
 	authenticateJWT, 
 	invalidPathHandler, 
 	errorResponder, 
 	errorLogger, 
 	requestLogger, 
-	login
+	login,
+	salaryAccess,
+	ownInformationAccess
 };

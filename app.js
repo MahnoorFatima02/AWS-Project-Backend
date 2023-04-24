@@ -2,33 +2,20 @@ const express = require('express')
 const app = express()
 var bodyParser = require('body-parser');
 const auth = require('./middleware/auth')
+const db = require('./database/db')
 const port = 3000
 app.use(bodyParser.json())
-
-const employeeSalaries = [
-	{
-			"employeeNumber": "1234",
-			"salary": "4000",
-			"department": "HR",
-	},
-	{
-		"employeeNumber": "1254",
-		"salary": "4020",
-		"department": "HR",
-	},
-	{
-		"employeeNumber": "1237",
-		"salary": "4100",
-		"department": "HR",
-	}
-];
 
 app.post('/login', (req, res) => {
   auth.login(req, res);
 });
 
-app.get('/employeeSalaries', auth.authenticateJWT, (req, res) => {
-    res.json(employeeSalaries);
+app.get('/employee/:id/salaries', auth.authenticateJWT, auth.salaryAccess, (req, res) => {
+	db.getEmployeeSalaries(req, res);
+});
+
+app.get('/employee/:id', auth.authenticateJWT, auth.ownInformationAccess, (req, res) => {
+	db.getEmployee(req, res);
 });
 
 app.use(auth.requestLogger)
