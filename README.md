@@ -5,14 +5,19 @@
 https://github.com/datacharmer/test_db/blob/master/employees.sql
 
 - Run the databse on your system using he commands as follows:
-`mysql < employees.sql`
+
+	`mysql < employees.sql`
 
 - You can test the installation by the following commands:
-`mysql -t < test_employees_md5.sql`
-# OR
-`mysql -t < test_employees_sha.sql`
+
+	`mysql -t < test_employees_md5.sql`
+
+	OR
+
+	`mysql -t < test_employees_sha.sql`
 
 - Create a user table in the database using the following sql commands:
+
     `CREATE TABLE users (
         emp_no     INT    NOT NULL,
         role       ENUM ('manager', 'staff', 'senior engineer', 'engineer', 'assistant engineer', 'technique leader') NOT NULL,
@@ -27,13 +32,15 @@ https://github.com/datacharmer/test_db/blob/master/employees.sql
 
 - Add the following data to the uswer table, using the below mentioned commands:
 
-`INSERT INTO users(emp_no, role, password) values(110183, 'manager', 'testpassword1');`
-`INSERT INTO users(emp_no, role, password) values(110022, 'manager', 'testpassword');`
-`INSERT INTO users(emp_no, role, password) values(10002, 'staff', 'testpassword1');`
+	`INSERT INTO users(emp_no, role, password) values(110183, 'manager', 'testpassword1');`
+
+	`INSERT INTO users(emp_no, role, password) values(110022, 'manager', 'testpassword');`
+
+	`INSERT INTO users(emp_no, role, password) values(10002, 'staff', 'testpassword1');`
 
 - Create a database user for accessing the database from the application:
 
-`CREATE USER 'shortcut'@'localhost' IDENTIFIED BY 'password';`
+	`CREATE USER 'shortcut'@'localhost' IDENTIFIED BY 'password';`
 
 - Add the `DB_USERNAME` and `DB_PASSWORD` properties in the `.env` file
 
@@ -57,11 +64,13 @@ https://github.com/datacharmer/test_db/blob/master/employees.sql
     `}
 
     This gives the access token, in the following format:
-    {
+
+    `{
         "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwMDAyLCJyb2xlIjoic3RhZmYiLCJpYXQiOjE2ODIyNjMxNDUsImV4cCI6MTY4MjI3MDM0NX0.SFW0PPc1gjHxMwg1fAgd5G_SqrKI9_c7uBZD8ae0uH8"
-    }
+    }`
 
     The JWT is as follows:
+
     `{
         "sub": 110022, // emp_no
         "role": "manager", // role of logged in user
@@ -69,7 +78,7 @@ https://github.com/datacharmer/test_db/blob/master/employees.sql
         "exp": 1682265509 // expires at
     }`
 
-	- NOTE: For JWT_KEY please create a .env file in the root folder with JWT_KEY="SomeRandomKey" for the backend to work.
+	**NOTE:** For JWT_KEY please create a .env file in the root folder with JWT_KEY="SomeRandomKey" for the backend to work.
 
 2. GET `/employee/:id/salaries`
 
@@ -90,11 +99,12 @@ https://github.com/datacharmer/test_db/blob/master/employees.sql
         },
     ]`
 
-NOTE: For JWT_KEY please create a .env file in the root folder with JWT_KEY="SomeRandomKey" for the backend to work. The Users in the users table with dedicated role as `Managers` will have the privileges of accessing any employees salaries. Other than that every employee will have the access to its own information including his respective salary.
+	**NOTE:** For JWT_KEY please create a .env file in the root folder with JWT_KEY="SomeRandomKey" for the backend to work. The Users in the users table with dedicated role as `Managers` will have the privileges of accessing any employees salaries. Other than that every employee will have the access to its own information including his respective salary.
 
 3. GET `/employee/:id`
 
     Use the above generated accessToken to get the employee information.Following json will be returned.
+
     `[
         {
             "employeeNumber": "10002",
@@ -105,4 +115,5 @@ NOTE: For JWT_KEY please create a .env file in the root folder with JWT_KEY="Som
             "hire_date": "1985-11-21"
         },
     ]`
-NOTE: This endpoint is also access restricted, every employee will be able to see only his information.
+
+	**NOTE:** This endpoint is also access restricted, every employee will be able to see only his information.
