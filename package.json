@@ -4,6 +4,8 @@
   "description": "AWS Project backend",
   "main": "index.js",
   "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
     "test": "npm run dev"
   },
   "author": "Mahnoor Fatima",
@@ -15,5 +17,8 @@
     "jsonwebtoken": "^9.0.0",
     "mysql2": "^3.2.3",
     "sequelize": "^6.31.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
   }
 }
