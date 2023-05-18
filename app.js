@@ -7,7 +7,7 @@ const port = 3000
 app.use(bodyParser.json())
 
 app.post('/login', (req, res) => {
-  auth.login(req, res);
+	auth.login(req, res);
 });
 
 app.get('/employee/:id/salaries', auth.authenticateJWT, auth.salaryAccess, (req, res) => {
@@ -18,6 +18,10 @@ app.get('/employee/:id', auth.authenticateJWT, auth.ownInformationAccess, (req, 
 	db.getEmployee(req, res);
 });
 
+app.get('/products', auth.authenticateJWT, (req, res) => {
+	db.getProducts(req, res);
+});
+
 app.use(auth.requestLogger)
 // Middle ware and other uses for the app
 app.use(auth.errorLogger)
@@ -25,5 +29,5 @@ app.use(auth.errorResponder)
 app.use(auth.invalidPathHandler)
 
 app.listen(port, () => {
-  console.log(`AWS Restart Backend listening on port ${port}`)
+	console.log(`AWS Restart Backend listening on port ${port}`)
 })

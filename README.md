@@ -4,7 +4,7 @@
 - Clone the databse repo from the below mentioned link:
 https://github.com/datacharmer/test_db/blob/master/employees.sql
 
-- Run the databse on your system using he commands as follows:
+- Run the databse on your system using the commands as follows:
 
 	`mysql < employees.sql`
 
@@ -30,7 +30,7 @@ https://github.com/datacharmer/test_db/blob/master/employees.sql
         PRIMARY KEY (emp_no)
     );`
 
-- Add the following data to the uswer table, using the below mentioned commands:
+- Add the following data to the user table, using the below mentioned commands:
 
 	`INSERT INTO users(emp_no, role, password) values(110183, 'manager', 'testpassword1');`
 
@@ -42,7 +42,31 @@ https://github.com/datacharmer/test_db/blob/master/employees.sql
 
 	`CREATE USER 'shortcut'@'localhost' IDENTIFIED BY 'password';`
 
+- Grant user permissions for database, using the command as follows:
+
+    `GRANT ALL ON `employees`.* TO 'shortcut'@'localhost';`
+
 - Add the `DB_USERNAME` and `DB_PASSWORD` properties in the `.env` file
+
+## 2nd Database setup
+- Copy and save the databse repo from the below mentioned link into a simple sql file:
+https://en.wikiversity.org/wiki/Database_Examples/Northwind/MySQL
+
+- Run the databse on your system using the commands as follows:
+
+	`mysql < Northwind.sql`
+
+- You can test the installation by the following commands:
+
+	`mysql -t < test_Northwind_md5.sql`
+
+	OR
+
+	`mysql -t < test_Northwind_sha.sql`
+
+- Grant the user `shortcut` the permissions for this database as well by using the following command:
+
+    `GRANT ALL ON `Northwind`.* TO 'shortcut'@'localhost';`
 
 ## Install the backend
 
@@ -82,7 +106,7 @@ https://github.com/datacharmer/test_db/blob/master/employees.sql
 
 2. GET `/employee/:id/salaries`
 
-    Use the above generated accessToken to get the employee Salaries.Following json will be returned.
+    Use the above generated accessToken to get the employee Salaries. The following json will be returned.
     
     `[
         {
@@ -99,11 +123,11 @@ https://github.com/datacharmer/test_db/blob/master/employees.sql
         },
     ]`
 
-	**NOTE:** For JWT_KEY please create a .env file in the root folder with JWT_KEY="SomeRandomKey" for the backend to work. The Users in the users table with dedicated role as `Managers` will have the privileges of accessing any employees salaries. Other than that every employee will have the access to its own information including his respective salary.
+	**NOTE:** The Users in the users table with dedicated role as `Managers` will have the privileges of accessing any employees salaries. Other than that every employee will have the access to its own information including his respective salary.
 
 3. GET `/employee/:id`
 
-    Use the above generated accessToken to get the employee information.Following json will be returned.
+    Use the above generated accessToken to get the employee information. The following json will be returned.
 
     `[
         {
@@ -117,3 +141,20 @@ https://github.com/datacharmer/test_db/blob/master/employees.sql
     ]`
 
 	**NOTE:** This endpoint is also access restricted, every employee will be able to see only his information.
+
+4. GET `/products?offset=0&limit=10`
+
+    Use the above generated accessToken to get the product information of the company. The following json will be returned.
+
+    `[
+        {
+            "ProductID": 1,
+            "ProductName": "Chais",
+            "SupplierID": 1,
+            "CategoryID": 1,
+            "Unit": "10 boxes x 20 bags",
+            "Price": "18"
+        },
+    ]`
+
+    `Offset` shows the pagenation in this endpoint while `limit` specifies how many products to be displayed per page. For example `offset = 0` and `limit = 10` means the response will be first 10 products. Similarly , if `offset = 60` and `limit = 10` means the response will be products with ID onwards 60 and less than 70.

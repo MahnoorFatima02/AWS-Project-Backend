@@ -1,218 +1,212 @@
-const { Sequelize, DataTypes } = require('sequelize');
+const { Sequelize, DataTypes, Op } = require('sequelize');
 const DB_USERNAME = process.env.DB_USERNAME
 const DB_PASSWORD = process.env.DB_PASSWORD
 const sequelize = new Sequelize('employees', DB_USERNAME, DB_PASSWORD, {
-  host: "127.0.0.1",
+	host: "127.0.0.1",
 	dialect: "mysql",
-    logging: function () {},
-    pool: {
-      max: 5,
-      min: 0,
-      idle: 10000
-    },
-    define: {
-      paranoid: true
-    }
+	logging: function () { },
+	pool: {
+		max: 5,
+		min: 0,
+		idle: 10000
+	},
+	define: {
+		paranoid: true
+	}
 });
 
+const northwind = new Sequelize('northwind', DB_USERNAME, DB_PASSWORD, {
+	host: "127.0.0.1",
+	dialect: "mysql",
+	logging: function () { },
+	pool: {
+		max: 5,
+		min: 0,
+		idle: 10000
+	},
+	define: {
+		paranoid: true
+	}
+});
 
-const employees = sequelize.define('employees', {
-  emp_no: {
+const products = northwind.define('Products', {
+	ProductID: {
 		type: DataTypes.INTEGER,
-    autoIncrement: true,
-    primaryKey: true
-  },
-  birth_date: {
-    type: DataTypes.DATE,
+		autoIncrement: true,
+		primaryKey: true
+	},
+	ProductName: {
+		type: DataTypes.CHAR(50),
 		allowNull: false
-  },
-	first_name: {
-    type: DataTypes.STRING,
+	},
+	SupplierID: {
+		type: DataTypes.INTEGER,
 		allowNull: false
-  },
-	last_name: {
-    type: DataTypes.STRING,
+	},
+	CategoryID: {
+		type: DataTypes.INTEGER,
 		allowNull: false
-  },
-	gender: {
-    type: DataTypes.ENUM('M','F'),
+	},
+	Unit: {
+		type: DataTypes.CHAR(25),
 		allowNull: false
-  },
-	hire_date: {
-    type: DataTypes.DATE,
+	},
+	Price: {
+		type: DataTypes.DECIMAL(10, 0),
 		allowNull: false
-  }
+	}
 }, {
 	timestamps: false,
-  freezeTableName: true
+	freezeTableName: true
+});
+
+const employees = sequelize.define('employees', {
+	emp_no: {
+		type: DataTypes.INTEGER,
+		autoIncrement: true,
+		primaryKey: true
+	},
+	birth_date: {
+		type: DataTypes.DATE,
+		allowNull: false
+	},
+	first_name: {
+		type: DataTypes.STRING,
+		allowNull: false
+	},
+	last_name: {
+		type: DataTypes.STRING,
+		allowNull: false
+	},
+	gender: {
+		type: DataTypes.ENUM('M', 'F'),
+		allowNull: false
+	},
+	hire_date: {
+		type: DataTypes.DATE,
+		allowNull: false
+	}
+}, {
+	timestamps: false,
+	freezeTableName: true
 });
 
 const departments = sequelize.define('departments', {
-  dept_no: {
+	dept_no: {
 		type: DataTypes.CHAR(4),
-    autoIncrement: true,
-    primaryKey: true
-  },
+		autoIncrement: true,
+		primaryKey: true
+	},
 	dept_name: {
-    type: DataTypes.STRING,
+		type: DataTypes.STRING,
 		allowNull: false,
-    unique: true
-  },
+		unique: true
+	},
 }, {
 	timestamps: false,
-  freezeTableName: true
+	freezeTableName: true
 });
 
 
 
 const dept_manager = sequelize.define('dept_manager', {
-    // emp_no: {
-    //       type: DataTypes.INTEGER,
-    //   autoIncrement: true,
-    //   primaryKey: true,
-    //   // FOREIGN KEY (emp_no)  REFERENCES employees (emp_no)    ON DELETE CASCADE,
-    //   // FOREIGN KEY (dept_no) REFERENCES departments (dept_no) ON DELETE CASCADE,
-    // },
-    // dept_no: {
-    //   type: DataTypes.CHAR(4),
-    //       allowNull: false,
-    //       primaryKey: true,
-    // },
-      from_date: {
-      type: DataTypes.DATE,
-          allowNull: false
-    },
-      to_date: {
-      type: DataTypes.DATE,
-          allowNull: false
-    },
- }, {
-  timestamps: false
+	from_date: {
+		type: DataTypes.DATE,
+		allowNull: false
+	},
+	to_date: {
+		type: DataTypes.DATE,
+		allowNull: false
+	},
+}, {
+	timestamps: false
 });
 
 const dept_emp = sequelize.define('dept_emp', {
-  // emp_no: {
-  //   type: DataTypes.INTEGER,
-  //   references: {
-  //     model: employees,
-  //     key: 'emp_no'
-  //   }
-  // },
-  // dept_no: {
-  //   type: DataTypes.CHAR(4),
-  //   references: {
-  //     model: departments,
-  //     key: 'dept_no'
-  //   }
-  // },
-  from_date: {
-    type: DataTypes.DATE,
-    allowNull: false
-  },
-  to_date: {
-    type: DataTypes.DATE,
-    allowNull: false
-  },
-  }, {
-  timestamps: false,
-  freezeTableName: true
+	from_date: {
+		type: DataTypes.DATE,
+		allowNull: false
+	},
+	to_date: {
+		type: DataTypes.DATE,
+		allowNull: false
+	},
+}, {
+	timestamps: false,
+	freezeTableName: true
 });
 
 const titles = sequelize.define('titles', {
-  title: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    primaryKey: true
-  },
-    from_date: {
-    type: DataTypes.DATE,
-    allowNull: false,
-    primaryKey: true
-  },
-    to_date: {
-    type: DataTypes.DATE,
-    allowNull: false
-  },
-    // FOREIGN KEY (emp_no) REFERENCES employees (emp_no) ON DELETE CASCADE,
-  }, {
-  timestamps: false
+	title: {
+		type: DataTypes.STRING,
+		allowNull: false,
+		primaryKey: true
+	},
+	from_date: {
+		type: DataTypes.DATE,
+		allowNull: false,
+		primaryKey: true
+	},
+	to_date: {
+		type: DataTypes.DATE,
+		allowNull: false
+	},
+}, {
+	timestamps: false
 });
 
 const salaries = sequelize.define('salaries', {
-	emp_no : {
+	emp_no: {
 		type: Sequelize.INTEGER,
 		references: {
-				model: employees,
-				key: 'emp_no'
+			model: employees,
+			key: 'emp_no'
 		}
 	},
-  salary: {
-    type: DataTypes.INTEGER,
-    allowNull: false
-  },
-  from_date: {
-    type: DataTypes.DATE,
-    allowNull: false,
-  },
-    to_date: {
-    type: DataTypes.DATE,
-    allowNull: false
-  },
-  }, {
-  timestamps: false
+	salary: {
+		type: DataTypes.INTEGER,
+		allowNull: false
+	},
+	from_date: {
+		type: DataTypes.DATE,
+		allowNull: false,
+	},
+	to_date: {
+		type: DataTypes.DATE,
+		allowNull: false
+	},
+}, {
+	timestamps: false
 });
 
 const users = sequelize.define('users', {
 	role: {
-    type: DataTypes.ENUM ('manager'),
+		type: DataTypes.ENUM('manager'),
 		allowNull: false,
-  },
-  password: {
-    type: DataTypes.CHAR(255),
+	},
+	password: {
+		type: DataTypes.CHAR(255),
 		allowNull: false,
-  }
+	}
 }, {
-  freezeTableName: true
+	freezeTableName: true
 });
 
 employees.hasOne(users, {
-  foreignKey: 'emp_no',
-  onDelete: 'CASCADE'
+	foreignKey: 'emp_no',
+	onDelete: 'CASCADE'
 });
 
-// Department manager relationship
-// Employee.hasMany(Dept_Manager, {
-//   foreignKey: 'emp_no',
-//   onDelete: 'CASCADE'
-// });
-// //Dept_Manager.belongsTo(Employee);
 
-// Departments.hasMany(Dept_Manager, {
-//   foreignKey: 'dept_no',
-//   onDelete: 'CASCADE'
-// });
-//Dept_Manager.belongsTo(Departments);
+departments.belongsToMany(employees, { through: dept_emp });
 
-
-// Department employees
-// Employee.hasMany(Dept_Emp, {
-  // foreignKey: 'emp_no',
-  // onDelete: 'CASCADE'
-// });
-departments.belongsToMany(employees, {through: dept_emp});
-
-// Departments.hasMany(Dept_Emp, {
-//   foreignKey: 'dept_no',
-//   onDelete: 'CASCADE'
-// });
-employees.belongsToMany(departments, {through: dept_emp});
+employees.belongsToMany(departments, { through: dept_emp });
 
 // Titles
 employees.hasMany(titles, {
-  foreignKey: 'emp_no',
-  onDelete: 'CASCADE'
+	foreignKey: 'emp_no',
+	onDelete: 'CASCADE'
 });
-//Titles.belongsTo(Employee);
 
 // Salaries
 employees.hasMany(salaries, {
@@ -220,7 +214,7 @@ employees.hasMany(salaries, {
 		name: 'emp_no',
 		allowNull: false
 	},
-  onDelete: 'CASCADE'
+	onDelete: 'CASCADE'
 });
 salaries.removeAttribute('id');
 
@@ -237,7 +231,7 @@ const connectDB = async () => {
 }
 
 const getEmployeeSalaries = async (req, res, next) => {
-  console.log(req.user)
+	console.log(req.user)
 	try {
 		const employeeNo = parseInt(req.params.id)
 		const employeeSalaries = await sequelize.models.salaries.findAll({
@@ -286,11 +280,10 @@ const getEmployeeDepartments = async (req, res, next) => {
 				emp_no: employeeNo
 			},
 			raw: true,
-			// nest: true,
 			include: [{
-        model: departments,
-      }]
-    });
+				model: departments,
+			}]
+		});
 		if (result.length > 0) {
 			res.json(result)
 		} else {
@@ -307,24 +300,44 @@ const getUser = async (employeeNo, password) => {
 		const user = await sequelize.models.users.findOne({
 			where: {
 				emp_no: employeeNo,
-        password: password
+				password: password
 			},
 			raw: true,
 		});
 		if (user) {
-      return user
+			return user
 		} else {
-      return null;
+			return null;
 		}
 	} catch (error) {
 		console.error('Unable to find user:', error);
 	}
 }
-1
+
+const getProducts = async (req, res, next) => {
+	try {
+		const offset = parseInt(req.query.offset)
+		const limit = parseInt(req.query.limit)
+		const products = await northwind.models.Products.findAll({
+			offset: offset * limit,
+			limit: limit,
+			raw: true,
+		});
+		if (products.length > 0) {
+			res.json(products)
+		} else {
+			res.status(404).json()
+		}
+	} catch (error) {
+		console.error('Unable to find product:', error);
+	}
+}
+
 module.exports = {
 	connectDB,
 	getEmployeeSalaries,
-  getEmployee,
-  getEmployeeDepartments,
-  getUser
+	getEmployee,
+	getEmployeeDepartments,
+	getUser,
+	getProducts
 };
