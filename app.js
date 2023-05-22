@@ -1,10 +1,12 @@
 const express = require('express')
+const cors = require('cors')
 const app = express()
 var bodyParser = require('body-parser')
 const auth = require('./middleware/auth')
 const db = require('./database/db')
 const port = process.env.PORT || 8080
 app.use(bodyParser.json())
+app.use(cors())
 
 app.get('/', (req, res) => {
   res.send('<h1>AWS project</h1>')
