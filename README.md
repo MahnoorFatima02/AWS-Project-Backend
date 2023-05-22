@@ -20,16 +20,16 @@
 - Create a user table in the database using the following sql commands:
 
   `CREATE TABLE users (
-      emp_no     INT    NOT NULL,
-      role       ENUM ('manager', 'staff', 'senior engineer', 'engineer', 'assistant engineer', 'technique leader') NOT NULL,
-      password   VARCHAR(255)   NOT NULL,
-      createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-      deletedAt TIMESTAMP DEFAULT NULL,
-      KEY         (emp_no),
-      FOREIGN KEY (emp_no) REFERENCES employees (emp_no) ON DELETE CASCADE,
-      PRIMARY KEY (emp_no)
-  );`
+    emp_no     INT    NOT NULL,
+    role       ENUM ('manager', 'staff', 'senior engineer', 'engineer', 'assistant engineer', 'technique leader') NOT NULL,
+    password   VARCHAR(255)   NOT NULL,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deletedAt TIMESTAMP DEFAULT NULL,
+    KEY         (emp_no),
+    FOREIGN KEY (emp_no) REFERENCES employees (emp_no) ON DELETE CASCADE,
+    PRIMARY KEY (emp_no)
+);`
 
 - Add the following data to the user table, using the below mentioned commands:
 
@@ -43,7 +43,7 @@
 
   `CREATE USER 'shortcut'@'localhost' IDENTIFIED BY 'password';`
 
-- Add the `DB_USERNAME` and `DB_PASSWORD` properties in the `.env` file
+- Add the `DB_USERNAME`, `DB_PASSWORD` and `DB_HOST` properties in the `.env` file
 
 ## Install the backend
 
