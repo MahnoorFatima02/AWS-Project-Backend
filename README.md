@@ -1,5 +1,16 @@
 # AWS-Project-Backend
 
+## AWS hosted API
+
+Below are images illustrating various aspects of our AWS-hosted API:
+<p>
+<img src="https://github.com/MahnoorFatima02/AWS-Project-Backend/blob/main/hosted-website/login.png" alt="login page logo" width="400" height="200" />
+<img src="https://github.com/MahnoorFatima02/AWS-Project-Backend/blob/main/hosted-website/database2.png" alt="database page" width="400" height="210" />
+<img src="https://github.com/MahnoorFatima02/AWS-Project-Backend/blob/main/hosted-website/product2.png" alt="database page" width="400" height="210" />
+</p>
+
+Each image is aimed at providing a clear understanding of how our API is structured, configured, and monitored within the AWS environment. 
+
 ## Database setup
 
 - Clone the databse repo from the below mentioned link:
